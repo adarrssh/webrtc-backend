@@ -19,6 +19,12 @@ io.on("connection", (socket) => {
     io.to(socket.id).emit("room:join", data);
   });
 
+  socket.on('send-message', (obj)=>{
+    const {remoteSocketId:room,message} = obj
+    console.log({room,message})
+    socket.broadcast.to(room).emit('incoming:message',message)
+  })
+
   socket.on("user:call", ({ to, offer }) => {
     io.to(to).emit("incomming:call", { from: socket.id, offer });
   });
