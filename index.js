@@ -1,9 +1,22 @@
-const { Server } = require("socket.io");
+const express = require('express')
+const dotenv = require('dotenv')
+const app = express()
+dotenv.config()
+const cors = require('cors');
+const { connectDB } = require('./db/db')
+connectDB()
+
+app.use(cors());
+app.use(express.json())
 
 const PORT = process.env.port || 8000
-const io = new Server(PORT, {
-  cors: true,
-});
+
+const server = app.listen(PORT,console.log(`server started on ${PORT}`))
+
+const io = require('socket.io')(server,{
+  pingTimeout:60000,
+  cors: true
+})
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
