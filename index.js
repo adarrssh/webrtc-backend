@@ -4,6 +4,8 @@ const app = express()
 dotenv.config()
 const cors = require('cors');
 const { connectDB } = require('./db/db')
+const authRoutes = require('./routes/auth');
+
 connectDB()
 
 app.use(cors());
@@ -13,6 +15,8 @@ const PORT = process.env.port || 8000
 
 const server = app.listen(PORT,console.log(`server started on ${PORT}`))
 
+
+app.use('/auth', authRoutes)
 const io = require('socket.io')(server,{
   pingTimeout:60000,
   cors: true
