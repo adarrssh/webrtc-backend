@@ -37,9 +37,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on('send-message', (obj)=>{
-    const {remoteSocketId:room,message} = obj
-    console.log({room,message})
-    socket.broadcast.to(room).emit('incoming:message',message)
+    const {remoteSocketId,name,message} = obj
+    console.log({remoteSocketId,name,message})
+    socket.broadcast.to(remoteSocketId).emit('incoming:message',{name,message})
   })
 
   socket.on("user:call", ({ to, offer }) => {
