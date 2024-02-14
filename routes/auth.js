@@ -8,9 +8,9 @@ const router = express.Router();
   // Signup route
   router.post('/signup',async (req, res) => {
     try {
-      const { username, email, password } = req.body;
+      const { name, email, password } = req.body;
       // const filePath = req.file ? req.file.path : null; // Path to the uploaded file
-      console.log(`Api call Signup`,{username,email,password})
+      console.log(`Api call Signup`,{name,email,password})
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         console.error(`User with email ${email} already exists`);
@@ -18,11 +18,12 @@ const router = express.Router();
       }
       
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = new User({ username, email, password: hashedPassword });
+      const user = new User({ username:name, email, password: hashedPassword });
       await user.save();
       
       console.log(`Success in Signup`)
-      res.status(201).json({ message: 'User registered successfully',email });
+
+      res.status(201).json({ message: 'User registered successfully',email, username : name, token : createJwtToken({email}) });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'An error occurred' });
