@@ -63,4 +63,13 @@ io.on("connection", (socket) => {
   socket.on("end:call",({to})=>{
     io.to(to).emit("call:ended")
   })
+
+
+  socket.on("camera:toggle",({to})=>{
+    io.to(to).emit("sender:cameraToggle")
+  })
+
+  socket.on("mic:toggle",({to})=>{
+    io.to(to).emit("sender:micToggle")
+  })
 });
